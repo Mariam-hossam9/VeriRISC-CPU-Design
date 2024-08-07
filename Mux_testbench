@@ -1,0 +1,60 @@
+library IEEE;
+use ieee.std_logic_1164.all;
+
+entity Address_MUX_TB is
+end Address_MUX_TB;
+
+architecture Behavioral of Address_MUX_TB is
+    
+    -- Signals
+    signal sel       : std_logic;
+    signal ir_addr   : std_logic_vector(4 downto 0);
+    signal pc_addr   : std_logic_vector(4 downto 0);
+    signal addr      : std_logic_vector(4 downto 0);
+    
+begin
+    -- Instantiate the Address_MUX component
+    uut : entity work.Address_MUX
+        port map (
+            sel       => sel,
+            ir_addr   => ir_addr,
+            pc_addr   => pc_addr,
+            addr      => addr
+        );
+        
+    -- Stimulus process
+    stimulus_proc: process
+    begin
+        -- Test case 1
+        sel <= '0';
+        ir_addr <= "10101";
+        pc_addr <= "00000";
+        wait for 10 ns;
+        assert addr = "10101" report "Test case 1 failed";
+        
+        -- Test case 2
+        sel <= '0';
+        ir_addr <= "01010";
+        pc_addr <= "00000";
+        wait for 10 ns;
+        assert addr = "01010" report "Test case 2 failed";
+        
+        -- Test case 3
+        sel <= '1';
+        ir_addr <= "00000";
+        pc_addr <= "10101";
+        wait for 10 ns;
+        assert addr = "10101" report "Test case 3 failed";
+        
+        -- Test case 4
+        sel <= '1';
+        ir_addr <= "00000";
+        pc_addr <= "01010";
+        wait for 10 ns;
+        assert addr = "01010" report "Test case 4 failed";
+        
+        -- End the simulation
+        wait;
+    end process stimulus_proc;
+    
+end Behavioral;
