@@ -1,0 +1,46 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity driver_tb is
+end entity driver_tb;
+
+architecture testbench of driver_tb is
+    component driver
+        port (
+            data_en : in std_logic;
+            data_in : in std_logic_vector(7 downto 0);
+            data_out : out std_logic_vector(7 downto 0)
+        );
+    end component;
+
+    signal data_en_tb : std_logic;
+    signal data_in_tb : std_logic_vector(7 downto 0);
+    signal data_out_tb : std_logic_vector(7 downto 0);
+
+begin
+    UUT: driver
+        port map (
+            data_en => data_en_tb,
+            data_in => data_in_tb,
+            data_out => data_out_tb
+        );
+
+    test_process: process
+    begin
+        data_en_tb <= '0';
+        data_in_tb <= "10101010";
+        wait for 10 ns;
+        assert data_out_tb = "ZZZZZZZZ" report "Test case 1 failed" severity error;
+		 
+        data_en_tb <= '1';
+        data_in_tb <= "01010101";
+        wait for 10 ns;
+		  assert data_out_tb = "01010101" report "Test case 2 failed" severity error;
+ 
+        data_in_tb <= "10101010";
+        wait for 10 ns;
+		  assert data_out_tb = "10101010" report "Test case 3 failed" severity error;
+     
+        wait;
+    end process;
+end architecture testbench;
