@@ -1,0 +1,52 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+
+
+entity ALU_INST is
+    port (
+        in_a      : in  std_logic_vector(7 downto 0);
+        in_b      : in  std_logic_vector(7 downto 0);
+        opcode    : in  std_logic_vector(2 downto 0);
+        alu_out   : out std_logic_vector(7 downto 0);
+        a_is_zero : out std_logic
+    );
+end ALU_INST;
+
+architecture Behavioral of ALU_INST is
+begin
+    process(in_a, in_b, opcode)
+    begin
+        case opcode is
+            when "000" =>
+                alu_out <= in_a;           -- HLT - PASS A
+            when "001" =>
+                alu_out <= in_a;           -- SKZ - PASS A
+            when "010" =>
+                alu_out <= in_a + in_b;    -- ADD - in_a + in_b
+            when "011" =>
+                alu_out <= in_a and in_b;  -- AND - in_a & in_b
+            when "100" =>
+                alu_out <= in_a xor in_b;  -- XOR - in_a ^ in_b
+            when "101" =>
+                alu_out <= in_b;           -- LDA - PASS B
+            when "110" =>
+                alu_out <= in_a;           -- STO - PASS A
+            when "111" =>
+                alu_out <= in_a;           -- JMP - PASS A
+            when others =>
+                alu_out <= (others => '0'); -- Default value if opcode is invalid
+        end case;
+    end process;
+
+    process(in_a)
+    begin
+        if in_a = "00000000" then
+            a_is_zero <= '1';
+        else
+            a_is_zero <= '0';
+        end if;
+    end process;
+end Behavioral;
