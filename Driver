@@ -1,0 +1,22 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Data_Control is
+    Port (
+        data_en : in  std_logic;         
+        data_in : in  std_logic_vector(8 downto 0); 
+        data_out : out  std_logic_vector(8 downto 0)
+    );
+end Data_Control;
+
+architecture Behavioral of Data_Control is
+begin
+    process(data_en, data_in)
+    begin
+        if data_en = '0' then
+            data_out <= (others => 'Z'); 
+        else
+            data_out <= data_in; 
+        end if;
+    end process;
+end Behavioral;
