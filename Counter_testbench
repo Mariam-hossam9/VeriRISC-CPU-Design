@@ -1,0 +1,68 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Counter_TB is
+end entity Counter_TB;
+
+architecture Behavioral of Counter_TB is
+    component Counter is
+        port (
+            clk,rst,load,enab : in  std_logic;
+            cnt_in  : in  std_logic_vector(4 downto 0);
+            cnt_out : out std_logic_vector(4 downto 0)
+        );
+    end component Counter;
+	 
+    signal tb_clk    : std_logic := '0';
+    signal tb_rst    : std_logic := '0';
+    signal tb_load   : std_logic := '0';
+    signal tb_enab   : std_logic := '0';
+    signal tb_cnt_in : std_logic_vector(4 downto 0) := (others => '0');
+    signal tb_cnt_out: std_logic_vector(4 downto 0);
+
+begin
+    uut: Counter
+    port map (
+        clk    => tb_clk,
+        rst    => tb_rst,
+        load   => tb_load,
+        enab   => tb_enab,
+        cnt_in => tb_cnt_in,
+        cnt_out=> tb_cnt_out
+    );
+
+    process
+    begin
+        while now < 100 ns loop
+            tb_clk <= '0';
+            wait for 5 ns;
+            tb_clk <= '1';
+            wait for 5 ns;
+        end loop;
+        wait;
+    end process;
+
+    process
+    begin
+        tb_rst     <= '1';
+        tb_load    <= '0';
+        tb_enab    <= '0';
+        tb_cnt_in  <= (others => '0');
+
+        wait for 10 ns;
+        tb_rst <= '0';
+
+        wait for 10 ns;
+        tb_load    <= '1';
+        tb_cnt_in  <= "01010";
+
+        wait for 10 ns;
+        tb_load    <= '0';
+
+        wait for 10 ns;
+        tb_enab    <= '1';
+
+        wait;
+    end process;
+
+end Behavioral;
