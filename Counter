@@ -1,0 +1,31 @@
+library IEEE;					
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Counter is
+    port (
+        clk,rst,load,enab  : in  std_logic;
+        cnt_in  : in  std_logic_vector(4 downto 0);
+        cnt_out : out std_logic_vector(4 downto 0)
+    );
+end entity Counter;
+
+architecture Behavioral of Counter is
+    signal counter_reg : std_logic_vector (4 downto 0);
+begin
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            if rst = '1' then 
+                counter_reg <="00000";
+            elsif load = '1' then  
+                counter_reg <= cnt_in;
+            elsif enab = '1' then  
+                counter_reg <= counter_reg + "00001";	
+            end if;
+        end if;
+    end process;
+
+    cnt_out <= counter_reg;
+end architecture Behavioral;
