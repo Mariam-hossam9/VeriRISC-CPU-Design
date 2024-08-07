@@ -1,0 +1,100 @@
+library ieee;
+
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+
+entity ALU_TB is
+end ALU_TB;
+
+architecture Behavioral of ALU_TB is
+    -- Signals
+    signal opcode       : std_logic_vector(2 downto 0);
+    signal in_a         : std_logic_vector(7 downto 0);
+    signal in_b         : std_logic_vector(7 downto 0);
+    signal a_is_zero    : std_logic;
+    signal alu_out      : std_logic_vector(7 downto 0);
+    
+begin
+    -- Instantiate the ALU component
+    uut : entity work.ALU_inst
+        port map (
+            opcode    => opcode,
+            in_a      => in_a,
+            in_b      => in_b,
+            a_is_zero => a_is_zero,
+            alu_out   => alu_out
+        );
+        
+    -- Stimulus process
+    stimulus_proc: process
+    begin
+        -- Test case 1
+        opcode <= "000";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "01000010" report "Test case 1 failed";
+        
+        -- Test case 2
+        opcode <= "001";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "01000010" report "Test case 2 failed";
+        
+        -- Test case 3
+        opcode <= "010";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "11001000" report "Test case 3 failed";
+        
+        -- Test case 4
+        opcode <= "011";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "00000010" report "Test case 4 failed";
+        
+        -- Test case 5
+        opcode <= "100";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "11000100" report "Test case 5 failed";
+        
+        -- Test case 6
+        opcode <= "101";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "10000110" report "Test case 6 failed";
+        
+        -- Test case 7
+        opcode <= "110";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "01000010" report "Test case 7 failed";
+        
+        -- Test case 8
+        opcode <= "111";
+        in_a <= "01000010";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "01000010" report "Test case 8 failed";
+        
+        -- Test case 9
+        opcode <= "111";
+        in_a <= "00000000";
+        in_b <= "10000110";
+        wait for 10 ns;
+        assert alu_out = "00000000" report "Test case 9 failed";
+        
+        -- End the simulation
+        wait;
+    end process stimulus_proc;
+    
+end Behavioral;
