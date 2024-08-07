@@ -1,0 +1,23 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity Address_MUX is
+    port (
+        sel       : in  std_logic;
+        ir_addr   : in  std_logic_vector(4 downto 0);
+        pc_addr   : in  std_logic_vector(4 downto 0);
+        addr      : out std_logic_vector(4 downto 0)
+    );
+end Address_MUX;
+
+architecture Behavioral of Address_MUX is
+begin
+    process(sel, ir_addr, pc_addr)
+    begin
+        if sel = '0' then
+            addr <= ir_addr;  -- Pass ir_addr to addr when sel is 0
+        else
+            addr <= pc_addr;  -- Pass pc_addr to addr when sel is 1
+        end if;
+    end process;
+end Behavioral;
